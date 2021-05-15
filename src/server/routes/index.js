@@ -5,7 +5,7 @@ const market = require('./market');
 
 const router = express.Router();
 
-router.use('/', user);
+router.use('/user', user);
 router.use('/', market);
 
-return router;
+module.exports = router;

@@ -20,15 +20,10 @@ module.exports = {
 	productionSourceMap  : false,
 	pages                : {
 		'index': {
-			entry   : './src/app/Market/main.js',
+			entry   : './src/app/main.js',
 			template: 'public/index.html',
 			title   : 'Market'
 		},
-		'auth' : {
-			entry   : './src/app/Auth/main.js',
-			template: 'public/auth.html',
-			title   : 'Auth'
-		}
 	},
 	lintOnSave           : false
 };

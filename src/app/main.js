@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import App from './Main.vue';
 import Vuetify from 'vuetify';
-import router from 'router';
+import router from './router/';
 
 Vue.use(Vuetify);
 

@@ -1,5 +1,5 @@
 <template lang="pug">
-
+	v-main.pa-0: p Hello
 </template>
 
 <script>

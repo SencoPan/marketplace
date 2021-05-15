@@ -8,9 +8,12 @@
 		"watch-front": "vue-cli-service build-watch --mode development"
 	},
 	"dependencies": {
+		"@hapi/joi": "^17.1.1",
 		"axios": "^0.21.1",
 		"express": "^4.17.1",
+		"jwt-decode": "^3.1.2",
 		"mongoose": "^5.12.9",
+		"morgan": "^1.10.0",
 		"vue": "^2.6.12",
 		"vue-router": "^3.5.1",
 		"vuetify": "^2.4.4",
