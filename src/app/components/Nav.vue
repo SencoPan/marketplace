@@ -1,33 +1,49 @@
 <template lang="pug">
 	v-app-bar(color="primary" tile): v-row.d-flex.justify-space-between.px-4( )
-		v-toolbar-title().white--text {{states[type]}} {{currentRouteName}}
-		//v-btn(depressed color="primary" ) {{actions[type]}}
+		v-toolbar-title().white--text {{currentRouteName}} {{states[indexForText]}}
 
-		v-btn(depressed  @click="redirectLogout" tile outlined).white--text {{actions[type]}}
+		div: v-btn(v-for='(type, index) in types' :key='index' depressed  @click="redirectLogout(type)" tile outlined).white--text.mx-4 {{actions[type]}}
 </template>
 
 <script>
-
+import axios from 'axios'
 import {authed} from '@/app/utils/auth';
 
 export default {
-	name    : 'NavButtons',
+	name    : 'Nav',
 	data() {
 		return {
 			authed : false,
-			type   : false,
-			actions: ['Создать аккаунт', 'Войти', 'Выйти'],
+			types  : [],
+			actions: ['Создать аккаунт', 'Войти', 'Выйти', 'На главную', 'Выйти со всех аккаунтов'],
 			states : ['Авторизация', 'Регистрация', 'Магазин']
 		};
 	},
 	computed: {
 		currentRouteName() {
-			this.type = this.authed ? 2 : this.$route.name === 'Login' ? 0 : this.$route.name === 'Registration' ? 1 : 3;
+			this.watchType();
+		},
+		indexForText() {
+			if (this.authed) return 2;
+			return this.types[0];
 		}
 	},
 	methods : {
-		redirectLogout() {
-
+		async redirectLogout(type) {
+			if (type === 0) return this.$router.push('/reg');
+			if (type === 1) return this.$router.push('Login');
+			if (type === 3) return this.$router.push('/');
+			if (type === 2 || type === 4) {
+				await axios({
+					method: 'post',
+					url   : `/user/${type === 2 ? 'logout' : 'logoutAll'}`
+				});
+				localStorage.clear();
+				window.location.href = '/';
+			}
+		},
+		watchType() {
+			this.types = this.authed ? [2, 4] : this.$route.name === 'Login' ? [0, 3] : this.$route.name === 'Registration' ? [1, 3] : [0, 1];
 		}
 	},
 	mounted() {
