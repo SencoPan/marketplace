@@ -25,7 +25,7 @@ export default {
 			this.watchType();
 		},
 		indexForText() {
-			if (this.authed && this.$route.name !== 'Merchant') {
+			if (this.authed && this.$route.name !== 'Merchant' || this.$route.name === 'Market') {
 				return 2;
 			} else if (this.authed) return 3;
 			return this.types[0];
@@ -51,9 +51,9 @@ export default {
 			} else if (this.authed) {
 				assign([2, 4, 5]);
 			} else if (this.$route.name === 'Login') {
-				assign([0, 3]);
+				assign([0, 5]);
 			} else if (this.$route.name === 'Registration') {
-				assign([1, 3]);
+				assign([1, 5]);
 			} else {
 				assign([0, 1]);
 			}

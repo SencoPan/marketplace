@@ -25,7 +25,7 @@ export default {
 				'price'      : createField('Цена', 1),
 				'description': createField('Описание', 0),
 				'image'      : createField('Наименование', 2, [], [
-					value => !value || value.size < 2000000 || 'Изображение должен быть меньше 2мб',
+					value => !!value || value.size < 2000000 || 'Изображение должен быть меньше 2мб',
 				])
 			}
 		};

@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import axios from 'axios';
+import {verify} from '@/app/utils/auth';
 
 Vue.use(VueRouter);
 
@@ -38,15 +38,8 @@ const router = new VueRouter({
 });
 
 router.beforeEach(async (to, from, next) => {
-	let authedCheck;
-	const token = localStorage.getItem('userToken')
-	try {
-		authedCheck = token ? await axios.get(`/user/verifyJWT?token=${token}`) : false;
-	} catch (e) {
-		authedCheck = false;
-	}
+	let authedCheck = await verify();
 
-	authedCheck = authedCheck ? authedCheck.data.verified : false;
 
 	if ((to.name === 'Merchant') && !authedCheck) {
 		next({name: 'Login'});

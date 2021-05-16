@@ -27,3 +27,16 @@ export function setToken(token) {
 	localStorage.setItem('userToken', token);
 	axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 }
+
+export async function verify() {
+	let authedCheck;
+
+	const token = localStorage.getItem('userToken');
+	try {
+		authedCheck = token ? await axios.get(`/user/verifyJWT`) : false;
+	} catch (e) {
+		authedCheck = false;
+	}
+
+	return authedCheck ? authedCheck.data.verified : false;
+}

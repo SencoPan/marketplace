@@ -20,6 +20,7 @@ const productScheme = new Schema({
 	timestamps: true
 });
 
+
 productScheme.index({code: 1}, {unique: true});
 
 

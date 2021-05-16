@@ -11,7 +11,7 @@
 					outlined :type="field.type"
 				)
 			v-row
-				v-col.col-8: v-btn(depressed color="primary" @click="proceed" tile).d-flex.button-fill Войти
+				v-col.col-8.pb-8: v-btn(depressed color="primary" @click="proceed" tile).d-flex.button-fill Войти
 
 </template>
 

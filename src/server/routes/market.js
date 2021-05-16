@@ -7,8 +7,8 @@ const validation = require('../middlewares/validation');
 const {authControl} = require('../middlewares/auth');
 
 
-router.get('/list', (req, res) => {
-	res.status(200).json({status: 'ok'});
+router.get('/list', async (req, res) => {
+	await marketController.list(req, res);
 });
 
 router.post('/create', authControl, upload.any(), validation(Joi.object({
