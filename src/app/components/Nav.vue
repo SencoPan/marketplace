@@ -6,17 +6,18 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from 'axios';
 import {authed} from '@/app/utils/auth';
 
 export default {
 	name    : 'Nav',
 	data() {
 		return {
-			authed : false,
-			types  : [],
-			actions: ['Создать аккаунт', 'Войти', 'Выйти', 'На главную', 'Выйти со всех аккаунтов'],
-			states : ['Авторизация', 'Регистрация', 'Магазин']
+			authed  : false,
+			types   : [],
+			redirect: {0: '/reg', 1: 'Login', 3: '/merch', 5: '/'},
+			actions : ['Создать аккаунт', 'Войти', 'Выйти', 'Добавить товар', 'Выйти со всех аккаунтов', 'На главную'],
+			states  : ['Авторизация', 'Регистрация', 'Магазин', 'Добавление товара']
 		};
 	},
 	computed: {
@@ -24,26 +25,38 @@ export default {
 			this.watchType();
 		},
 		indexForText() {
-			if (this.authed) return 2;
+			if (this.authed && this.$route.name !== 'Merchant') {
+				return 2;
+			} else if (this.authed) return 3;
 			return this.types[0];
 		}
 	},
 	methods : {
 		async redirectLogout(type) {
-			if (type === 0) return this.$router.push('/reg');
-			if (type === 1) return this.$router.push('Login');
-			if (type === 3) return this.$router.push('/');
 			if (type === 2 || type === 4) {
 				await axios({
 					method: 'post',
 					url   : `/user/${type === 2 ? 'logout' : 'logoutAll'}`
 				});
 				localStorage.clear();
-				window.location.href = '/';
+				return window.location.href = '/';
 			}
+			await this.$router.push(this.redirect[type]);
 		},
 		watchType() {
-			this.types = this.authed ? [2, 4] : this.$route.name === 'Login' ? [0, 3] : this.$route.name === 'Registration' ? [1, 3] : [0, 1];
+			const assign = (arr) => this.types = arr;
+
+			if (this.authed && this.$route.name !== 'Merchant') {
+				assign([2, 4, 3]);
+			} else if (this.authed) {
+				assign([2, 4, 5]);
+			} else if (this.$route.name === 'Login') {
+				assign([0, 3]);
+			} else if (this.$route.name === 'Registration') {
+				assign([1, 3]);
+			} else {
+				assign([0, 1]);
+			}
 		}
 	},
 	mounted() {

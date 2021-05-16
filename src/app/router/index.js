@@ -8,7 +8,7 @@ const routes = [
 	{
 		path     : '/',
 		name     : 'Market',
-		component: () => import(/* webpackChunkName:'registration' */ '../views/Market.vue')
+		component: () => import(/* webpackChunkName:'market' */ '../views/Market.vue')
 	},
 	{
 		path     : '/reg',
@@ -19,6 +19,11 @@ const routes = [
 		path     : '/login',
 		name     : 'Login',
 		component: () => import(/* webpackChunkName:'login' */ '../views/Login.vue')
+	},
+	{
+		path     : '/merch',
+		name     : 'Merchant',
+		component: () => import(/* webpackChunkName:'merchant' */ '../views/Merchant.vue')
 	},
 	{
 		path    : '*',

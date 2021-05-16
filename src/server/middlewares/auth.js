@@ -5,7 +5,6 @@ const {JWT} = require('../../../config/server');
 const getData = async (req) => {
 	try {
 		const token = req.header('Authorization')?.replace('Bearer ', '');
-		console.log('UM', token);
 		const data = token !== null && !!token ? jwt.verify(token, JWT.key) : false;
 		return {data, token};
 	} catch (e) {

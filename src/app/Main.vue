@@ -10,6 +10,8 @@
 <script>
 import Nav from '@/app/components/Nav';
 
+const axios = require('axios');
+
 export default {
 	name      : 'Market',
 	components: {Nav},
