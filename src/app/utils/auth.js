@@ -38,5 +38,5 @@ export async function verify() {
 		authedCheck = false;
 	}
 
-	return authedCheck ? authedCheck.data.verified : false;
+	return authedCheck ? authedCheck.data : false;
 }

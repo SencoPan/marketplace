@@ -51,11 +51,11 @@ exports.logoutAll = async (req, res) => {
 	} catch (error) {
 		res.status(500).send(error);
 	}
-}
+};
 
 exports.verifyJWT = async function (request, response) {
 	try {
-		response.status(201).send({verified: true});
+		response.status(201).send({verified: true, user: request.user});
 	} catch (error) {
 		console.log(error);
 		response.status(400).end();

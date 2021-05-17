@@ -40,7 +40,6 @@ const router = new VueRouter({
 router.beforeEach(async (to, from, next) => {
 	let authedCheck = await verify();
 
-
 	if ((to.name === 'Merchant') && !authedCheck) {
 		next({name: 'Login'});
 	} else if (~['Login', 'Registration'].indexOf(to.name) && authedCheck) {
