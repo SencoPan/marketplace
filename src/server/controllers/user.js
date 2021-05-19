@@ -11,19 +11,18 @@ exports.login = async function (request, response) {
 
 		response.status(200).send({user, token});
 	} catch (e) {
-		console.log(e);
+		console.error(e);
 		response.status(400).end();
 	}
 };
 
 exports.registration = async function (request, response) {
 	try {
-		const user = new User(request.body);
-		await user.save();
+		const user = await User.create(request.body);
 		const token = await user.generateAuthToken(User);
 		response.status(201).send({user, token});
 	} catch (error) {
-		console.log(error);
+		console.error(error);
 		response.status(400).end();
 	}
 };
@@ -32,24 +31,22 @@ exports.registration = async function (request, response) {
 exports.logout = async (req, res) => {
 	// Log user out of the application
 	try {
-		req.user.tokens = req.user.tokens.filter((token) => {
-			return token.token != req.token;
-		});
-		await req.user.save();
-		res.send();
+		await User.updateOne({_id: req.user._id}, {$pull: {tokens: {token: req.token}}});
+		res.status(200).end();
 	} catch (error) {
-		res.status(500).send(error);
+		console.error(error);
+		res.status(500).end();
 	}
 };
 
 exports.logoutAll = async (req, res) => {
 	// Log user out of all devices
 	try {
-		req.user.tokens.splice(0, req.user.tokens.length);
-		await req.user.save();
-		res.send();
+		await User.updateOne({_id: req.user._id}, {tokens: []});
+		res.status(200).end();
 	} catch (error) {
-		res.status(500).send(error);
+		console.error(error);
+		res.status(500).send();
 	}
 };
 
@@ -57,7 +54,7 @@ exports.verifyJWT = async function (request, response) {
 	try {
 		response.status(201).send({verified: true, user: request.user});
 	} catch (error) {
-		console.log(error);
+		console.error(error);
 		response.status(400).end();
 	}
 };

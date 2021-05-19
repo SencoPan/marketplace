@@ -1,5 +1,6 @@
-const Product = require('../models/product');
+const {Product} = require('../models/product');
 const mongoose = require('mongoose');
+const {generateCode} = require('../models/product');
 
 exports.list = async function (request, response) {
 	try {
@@ -95,7 +96,6 @@ exports.deleteProduct = async function (request, response) {
 
 exports.create = async function (request, response) {
 	try {
-		const product = new Product();
 		const productBody = {
 			...request.body,
 			image : {
@@ -103,14 +103,12 @@ exports.create = async function (request, response) {
 				contentType: request.files[0].mimetype
 			},
 			userId: request.user._id,
-			code  : await product.generateCode(Product)
+			code  : await generateCode(Product)
 		};
 
 		if (!productBody.code) return response.status(400).end(); //change product code to characters instead of numbers
 
-		for (let index in productBody) product[index] = productBody[index];
-
-		await product.save();
+		await Product.create(productBody);
 		response.status(200).send({created: true});
 	} catch (e) {
 		console.error(e);

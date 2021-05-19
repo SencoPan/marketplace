@@ -23,8 +23,10 @@ const productScheme = new Schema({
 
 productScheme.index({code: 1}, {unique: true});
 
+exports.Product = mongoose.model('Product', productScheme);
 
-productScheme.methods.generateCode = async function (Product) {
+
+exports.generateCode = async (Product) => {
 	const lastRecord = await Product.find({}, {code: 1, _id: 0}).sort({_id: -1}).limit(1);
 	if (!lastRecord || !lastRecord.length) return '000001';
 
@@ -36,5 +38,3 @@ productScheme.methods.generateCode = async function (Product) {
 
 	return '0'.repeat(6 - code.length) + code;
 };
-
-module.exports = mongoose.model('Product', productScheme);
