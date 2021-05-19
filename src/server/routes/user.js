@@ -5,7 +5,6 @@ const userController = require('../controllers/user');
 const validation = require('../middlewares/validation');
 const {authControl} = require('../middlewares/auth');
 
-
 router.get('/verifyJWT', authControl, async (req, res) => {
 	await userController.verifyJWT(req, res);
 });
@@ -31,6 +30,5 @@ router.post('/logout', authControl, async (req, res) => {
 router.post('/logoutAll', authControl, async (req, res) => {
 	await userController.logoutAll(req, res);
 });
-
 
 module.exports = router;

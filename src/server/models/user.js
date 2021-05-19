@@ -39,11 +39,14 @@ userScheme.methods.checkPassword = function (password) {
 	return crypto.pbkdf2Sync(password, this.salt, 1, 128, 'sha1') == this.passwordHash;
 };
 
-userScheme.methods.generateAuthToken = async function () {
+userScheme.methods.generateAuthToken = async function (User) {
 	const user = this;
 	const token = jwt.sign({_id: user._id}, JWT.key);
-	user.tokens = user.tokens.concat({token});
-	await user.save();
+	await User.updateOne({
+		_id: user._id,
+	}, {
+		$push: {tokens: {token}}
+	});
 	return token;
 };
 

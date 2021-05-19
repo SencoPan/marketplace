@@ -7,7 +7,7 @@ exports.login = async function (request, response) {
 		const user = await User.findOne({login});
 		if (!user || !user.checkPassword(password)) return response.status(400).end();
 
-		const token = await user.generateAuthToken();
+		const token = await user.generateAuthToken(User);
 
 		response.status(200).send({user, token});
 	} catch (e) {
@@ -20,7 +20,7 @@ exports.registration = async function (request, response) {
 	try {
 		const user = new User(request.body);
 		await user.save();
-		const token = await user.generateAuthToken();
+		const token = await user.generateAuthToken(User);
 		response.status(201).send({user, token});
 	} catch (error) {
 		console.log(error);
